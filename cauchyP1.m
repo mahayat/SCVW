@@ -11,7 +11,7 @@
 % Estimate the order of convergence by 
 % p_i = log(e_i / e_{i-1}))/log(h_i/h_{i-1})
 % e_i errors relative to the discretization step h_i.
-clear all; close all; clc;
+clear; close all; clc;
 tspan = [0,1]; y0=0; f=@(t,y) cos(2*y);
 u=@(t) 0.5*asin( (exp(4*t)-1)./ (exp(4*t)+1));
 
@@ -26,18 +26,46 @@ for k=1:10
     Nh = 2*Nh;
 end
 
+txtfile = fopen('cauchyP1.txt','wt');
+
 pf = log(abs(fe(1:end-1) ./ fe(2:end)))/log(2);
-pf(1:2:end)
+fprintf(txtfile, '\n FE: %.5f', pf(1:end));
 
 pb = log(abs(be(1:end-1) ./ be(2:end)))/log(2);
-pb(1:2:end)
+fprintf(txtfile, '\n BE: %.5f', pb(1:end));
 
 pcn = log(abs(cn(1:end-1) ./ cn(2:end)))/log(2);
-pcn(1:2:end)
+fprintf(txtfile, '\n CN: %.5f', pcn(1:end));
+
+fclose(txtfile);
 %%
 figure(1);
 xaxis = (2.^(1:10));
-plot(xaxis, fe,'r','LineWidth',1.5); hold on;
-plot(xaxis, be,'g','LineWidth',1.5); hold on;
-plot(xaxis, cn,'b','LineWidth',1.5); grid on;
+plot(xaxis, fe,'r-.','LineWidth',1.5); hold on;
+plot(xaxis, be,'g:','LineWidth',1.5); hold on;
+plot(xaxis, cn,'b--','LineWidth',1.5); grid on;
 legend('FE', 'BE', 'CN');
+xlabel('Nh'); ylabel('Absolute Error');
+saveas(gcf,'cauchyP1_error.png')
+%%
+figure(2);
+plot(t,ufe,'r-.','LineWidth',1); hold on;
+plot(t,ube,'g:','LineWidth',1); hold on;
+plot(t,ucn,'b--','LineWidth',1); hold on;
+legend('FE', 'BE', 'CN');
+xlabel('t'); ylabel('y(t)');
+saveas(gcf,'cauchyP1_solution.png');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
