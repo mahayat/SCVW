@@ -28,13 +28,13 @@ end
 
 txtfile = fopen('cauchyP1.txt','wt');
 
-pf = log(abs(fe(1:end-1) ./ fe(2:end)))/log(2);
+pf = log(abs(fe(1:end-1) ./ fe(2:end)))/log(2)
 fprintf(txtfile, '\n FE: %.5f', pf(1:end));
 
-pb = log(abs(be(1:end-1) ./ be(2:end)))/log(2);
+pb = log(abs(be(1:end-1) ./ be(2:end)))/log(2)
 fprintf(txtfile, '\n BE: %.5f', pb(1:end));
 
-pcn = log(abs(cn(1:end-1) ./ cn(2:end)))/log(2);
+pcn = log(abs(cn(1:end-1) ./ cn(2:end)))/log(2)
 fprintf(txtfile, '\n CN: %.5f', pcn(1:end));
 
 fclose(txtfile);
@@ -42,19 +42,28 @@ fclose(txtfile);
 figure(1);
 xaxis = (2.^(1:10));
 plot(xaxis, fe,'r-.','LineWidth',1.5); hold on;
-plot(xaxis, be,'g:','LineWidth',1.5); hold on;
+plot(xaxis, be,'k:','LineWidth',1.5); hold on;
 plot(xaxis, cn,'b--','LineWidth',1.5); grid on;
 legend('FE', 'BE', 'CN');
 xlabel('Nh'); ylabel('Absolute Error');
 saveas(gcf,'cauchyP1_error.png')
 %%
 figure(2);
-plot(t,ufe,'r-.','LineWidth',1); hold on;
-plot(t,ube,'g:','LineWidth',1); hold on;
-plot(t,ucn,'b--','LineWidth',1); hold on;
+plot(t,ufe,'r-.','LineWidth',1.2); hold on;
+plot(t,ube,'k:','LineWidth',1.2); hold on;
+plot(t,ucn,'b--','LineWidth',1.2); grid on;
+% plot(t,u(t),'g-','LineWidth',1.2); grid on;
 legend('FE', 'BE', 'CN');
 xlabel('t'); ylabel('y(t)');
 saveas(gcf,'cauchyP1_solution.png');
+%%
+figure(3);
+plot(pf,'r-.','LineWidth',1.2); hold on;
+plot(pb,'k:','LineWidth',1.2); hold on;
+plot(pcn,'b--','LineWidth',1.2); grid on;
+legend('FE', 'BE', 'CN');
+ylabel('Order (p)');
+saveas(gcf,'cauchyP1_order.png');
 
 
 
